@@ -3,18 +3,24 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package battleship;
+package citbyui260.section03.battleship.view;
 
+import citbyui260.section03.battleship.msgs.BattleshipError;
+import citbyui260.section03.battleship.game.Game;
+import citbyui260.section03.battleship.control.GameMenuControl;
+import citbyui260.section03.battleship.enums.PlayerType;
+import citbyui260.section03.battleship.view.MenuSuper;
+import java.io.Serializable;
 import java.util.Scanner;
 
 /**
  *
  * @author Jeffry Simpson - BYUI CIT260 Section 03
  */
-public class GameMenu
+public class GameMenu extends MenuSuper
 {
     private Game game;
-    private GameMenuControl gameMenuControl ; 
+    private GameMenuControl gameMenuControl; 
 
     public Game getGame() {
         return game;
@@ -48,11 +54,14 @@ public class GameMenu
     
     public GameMenu(Game game) 
     {
+        super(GameMenu.menuItems);
+        
         this.game = game;  //2-16 Jeffry Added
         this.gameMenuControl = new GameMenuControl(game);
         
     }
     
+    @Override
     public void getInput() 
     {
    
@@ -60,27 +69,36 @@ public class GameMenu
         Scanner inFile = new Scanner(System.in);
 
         do {    
-            this.display(); // display the menu
-
-            // get commaned entered
-            command = inFile.nextLine();
-            command = command.trim().toUpperCase();
+            
+            if(this.game.currentPlayer.getPlayerType()  == PlayerType.HUMAN)
+            {
+                this.display(); // display the menu
+                    // get commaned entered
+                command = inFile.nextLine();
+                command = command.trim().toUpperCase();
+            }
+            else
+                //add IF/Else for Game Won/Lost
+                command = "F";
+            
             
             switch (command) {
                 case "P":
                     this.gameMenuControl.placeShips();
                     break;
                 case "F":
-                    this.gameMenuControl.fireAShot();  
+                    this.gameMenuControl.fireAShot();
+                    this.game.switchPlayers();
                     break;
                 case "A":
-                    this.gameMenuControl.availableShots();
+                    this.game.currentPlayer.shotBoard.availableShots();
                     break;
                 case "D":
                     gameMenuControl.displayBoard();
                     break;
                 case "S":
                     gameMenuControl.startNewGame();
+                    command = "Q"; 
                     break;
                 case "R":
                     gameMenuControl.displayStatistics();
@@ -102,16 +120,16 @@ public class GameMenu
         return;
     }
     
-    private final void display() //Updated to private 3/7 - Jeremy K.
-    {
-        System.out.println("\n\t===============================================================");
-        System.out.println("\tEnter the letter associated with one of the following commands:");
-
-        for (int i = 0; i < this.menuItems.length; i++) {
-            System.out.println("\t   " + menuItems[i][0] + "\t" + menuItems[i][1]);
-        }
-        System.out.println("\t===============================================================\n");
-    }
+//    private final void display() //Updated to private 3/7 - Jeremy K.
+//    {
+//        System.out.println("\n\t===============================================================");
+//        System.out.println("\tEnter the letter associated with one of the following commands:");
+//
+//        for (int i = 0; i < this.menuItems.length; i++) {
+//            System.out.println("\t   " + menuItems[i][0] + "\t" + menuItems[i][1]);
+//        }
+//        System.out.println("\t===============================================================\n");
+//    }
   
     
 }

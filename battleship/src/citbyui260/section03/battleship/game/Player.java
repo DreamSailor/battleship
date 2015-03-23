@@ -3,8 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package battleship;
-
+package citbyui260.section03.battleship.game;
+import citbyui260.section03.battleship.ships.Boat;
+import citbyui260.section03.battleship.boards.ShotBoard;
+import citbyui260.section03.battleship.boards.ShipBoard;
+import citbyui260.section03.battleship.boards.Board;
+import citbyui260.section03.battleship.enums.*;  //Inport ENUM Class
 
 /**
  *
@@ -13,12 +17,12 @@ package battleship;
 public class Player
 {
     String name;
-    private String playerType;
+    private PlayerType playerType;
     private String marker;
     private long wins = 0;
     private long losses = 0;
-    public Board shotBoard;    //Jeffry - 2/16 added
-    public Board boatBoard;    //Jeffry - 2/16 added
+    public ShotBoard shotBoard;    //Jeffry - 2/16 added
+    public ShipBoard boatBoard;    //Jeffry - 2/16 added
     public Boat submarine;
     public Boat battleship;
     public Boat carrier;
@@ -27,11 +31,11 @@ public class Player
     public Player()
     {
        
-       shotBoard = new Board();    //Jeffry - 2/16 added to avoid getting NPE
-       boatBoard = new Board();    //Jeffry - 2/16 added to avoid getting NPE
-       submarine = new Boat(3,"Submarine", ShipType.SUBMARINE);     //Jeremy - 2/24
-       battleship = new Boat(4,"BattleShip", ShipType.BATTLESHIP);  //Jeremy - 2/24 
-       carrier = new Boat(5,"Carrier", ShipType.CARRIER);
+       shotBoard = new ShotBoard();    //Jeffry - Player board to show shots
+       boatBoard = new ShipBoard();    //Jeffry - Player board to show boats
+       submarine = new Boat(ShipType.SUBMARINE);     //Jeremy - 2/24
+       battleship = new Boat(ShipType.BATTLESHIP);  //Jeremy - 2/24 
+       carrier = new Boat(ShipType.CARRIER);
         
     }
 
@@ -46,11 +50,11 @@ public class Player
    }
     
    
-    public String getPlayerType() {
+    public PlayerType getPlayerType() {
         return playerType;
     }
     
-    public void setPlayerType(String playerType) {
+    public void setPlayerType(PlayerType playerType) {
         this.playerType = playerType;
     }
 
@@ -98,42 +102,13 @@ public class Player
     
     --------------------------------------------------------------------*/
     public int shotsTaken()
-    {
-        int sum=0;
+    {  
+        int sum = this.shotBoard.getHits() + this.shotBoard.getMisses();
         
-        for( int[] row : this.shotBoard.grid)
-            for(int col : row)
-                if(col == 1)
-                    sum++;
-                    
-      return sum;              
+        return sum;              
     }
     
-    
-    /*-------------------------------------------------------------------
-    Description: Calculate hits and misses on shotBoard
-    
-    Author(s): John Vehikite\
-    
-    Note: I am not sure if this is the best name for this method.
-    --------------------------------------------------------------------*/
-    
-    public void getHitMiss() {
-        Board board = this.shotBoard;
-        int hit = 0;
-        int miss = 1; // no code to show misses yet, so intialized to 1 for testing
-        
-        for(int i = 0; i < board.rows; i++) {
-            for (int j = 0; j < board.cols; j++) {
-                if(board.grid[i][j] == 1)
-                    hit++;
-                if(board.grid[i][j] == 2)
-                    miss++;
-            }
-        }
-        getGameStats(hit, miss);
-    }
-    
+
     
     /*-------------------------------------------------------------------
     Description:  Calculates Hit and Miss Percentage from Hit and Miss info
@@ -151,11 +126,10 @@ public class Player
     {
         double totalShots,hitPercent,missPercent;   //Requirement 1 - Two or more primitive Variables
         int hitOutput, missOutput;                  //Variables for typecasting
-        Board board = this.shotBoard;
         
         if(hit == 0 && miss == 0)   //Requirement 3 - At least one Relational operator 
         {
-            System.out.println("\nError: You can't divide by 0\n");  //Check for 0 and print error
+            System.out.println("\nError: You have taken no shots yet.  Try harder.");  //Check for 0 and print error
             return -1;
         }
         else if(hit < 0 || miss < 0)  //CHeck if Hit or miss are less than 0
@@ -165,7 +139,7 @@ public class Player
         }
         else
         {
-            averageScores();
+            
             
              totalShots = hit + miss;               //Requirement 2 - Two or More Mathmatical Operators
              hitPercent = hit/totalShots;
@@ -175,10 +149,12 @@ public class Player
              missOutput = (int) (missPercent * 100);
             
              // Requirement 5 - at least two character escape sequences
-             System.out.println("\nYou statistics:\n\tTotal shots: " + (int) totalShots + "\n\tHits:" + hit +" Percentage: " +hitOutput + "%\n\tMiss:" + miss +" Percentage: " +missOutput+"%");
-                 
-            sortScores();
-            highScoreNames();
+             System.out.println(getName() + " Your statistics:\n\tTotal shots: " + (int) totalShots + "\n\tHits:" + hit +" Percentage: " +hitOutput + "%\n\tMiss:" + miss +" Percentage: " +missOutput+"%");
+             
+            //Additional scoring functions here
+            //averageScores();
+            //sortScores();
+            //highScoreNames();
             
              
              return 0;  //Exit all is well
@@ -189,7 +165,7 @@ public class Player
     //Group Programming Assignment 2-19-15
     //The exchange sort compares the first element with each following element of the array, making any necessary swaps.
     
-    private void sortScores () 
+    public void sortScores () 
     {
         
         int[] scores = {10, 90, 60, 40, 20, 90, 50};
@@ -215,7 +191,7 @@ public class Player
     //for-each loop to calculate the average of the scores. By Shatzi for the Individual Assignment lesson6
     
    
-    private void averageScores() 
+    public void averageScores() 
     {
         int[] scores = {50, 90, 60, 40, 20, 90, 10};
         double result = 0; //average will have decimal point
@@ -231,7 +207,7 @@ public class Player
         {
             result += scores[i];
         }
-        System.out.println("The current average score is: " + result/average);
+        System.out.println("The average score is: " + result/average);
         
     }
         
@@ -239,7 +215,7 @@ public class Player
 
     
     
- private void highScoreNames()
+ public void highScoreNames()
     {
                 System.out.print("\n");
                 System.out.println ("Names of players with current high scores:");

@@ -1,5 +1,7 @@
-package battleship;
+package citbyui260.section03.battleship.game;
 
+import citbyui260.section03.battleship.enums.PlayerType;
+import citbyui260.section03.battleship.msgs.BattleshipError;
 import java.io.Serializable;
 
 /*
@@ -95,8 +97,8 @@ public class Game implements Serializable {
      //String gameType; --  2/14 Jeffry, this is not being used anywhere
      Player playerA;
      Player playerB;
-     Player currentPlayer;
-     Player otherPlayer;
+     public Player currentPlayer;
+     public Player otherPlayer;
      Player winner;
      Player loser;
      String status;
@@ -115,7 +117,7 @@ public class Game implements Serializable {
     }
 
 */
-    private void start(int numPlayers) {
+    public void start(int numPlayers) {
 
 
         // clear the board for both players  (2/16 Jeffry added Player. )
@@ -129,6 +131,7 @@ public class Game implements Serializable {
 
         if(numPlayers == 1)  //Setup AI ships
         {
+            
             playerB.boatBoard.shipPlacementAI(playerB.submarine);  //Let the AI pick all the locations
             playerB.boatBoard.shipPlacementAI(playerB.battleship);  //Let the AI pick all the locations
             playerB.boatBoard.shipPlacementAI(playerB.carrier);  //Let the AI pick all the locations
@@ -141,14 +144,17 @@ public class Game implements Serializable {
 
         if(numPlayers == 1)   //2-16 Jeffry -  One Player Game, Real Player always starts
         {
+            playerA.setPlayerType(PlayerType.HUMAN);
+            playerB.setPlayerType(PlayerType.AI);
+            
             this.currentPlayer = playerA;
             this.otherPlayer = playerB;
-            this.playerB.setPlayerType(AIPLAYER);       //2-20 added AIPlayer String in 1 player game
+            
         }
         else    // Else for two player game, randomly choose which one goes first
         {   
-            this.playerA.setPlayerType("");     //2-20 Jeffry Set player types to real
-            this.playerB.setPlayerType("");
+            playerA.setPlayerType(PlayerType.HUMAN);
+            playerB.setPlayerType(PlayerType.HUMAN);
             
             double randomValue = Math.random();
             
@@ -169,13 +175,15 @@ public class Game implements Serializable {
     Date:   2/16/2015
     Descpt: Method to switch current and other Player.
     */
-    private void switchPlayers()
+    public void switchPlayers()
     {
         Player tempPlayer;  //temp place holder
         
         tempPlayer = this.currentPlayer;
         this.currentPlayer = this.otherPlayer;
         this.otherPlayer = tempPlayer;
+        
+        new BattleshipError().displayLine("\n" + this.currentPlayer.getName() + " It's your turn.");
         
     }
     

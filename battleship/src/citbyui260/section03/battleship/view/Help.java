@@ -3,18 +3,19 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package battleship;
+package citbyui260.section03.battleship.view;
 
+import citbyui260.section03.battleship.msgs.BattleshipError;
+import citbyui260.section03.battleship.control.HelpMenuControl;
 import java.util.Scanner;
+
 
 /**
  *
  * @author Shatzi-Webster
  */
-public class Help  {
-
-    
-        
+public class Help extends MenuSuper {
+          
     private final static String[][] menuItems = {
         {"B", "The board"},
         {"C", "A computer player"}, 
@@ -26,6 +27,12 @@ public class Help  {
         {"Q", "Quit Help"}        
     };
     
+    
+    
+    public Help() {
+        super(Help.menuItems);
+    }
+    
     // Create instance of the HelpMenuControl (action) class
     private HelpMenuControl helpMenuControl = new HelpMenuControl();
     
@@ -36,12 +43,10 @@ public class Help  {
     public void setHelpMenuControl(HelpMenuControl helpMenuControl) {
         this.helpMenuControl = helpMenuControl;
     }
-    // default constructor
-    public Help() {
-        
-    } 
-    
+     
     // display the help menu and get the end users input selection
+    
+    @Override
     public void getInput() {       
               
         String command;
@@ -89,14 +94,20 @@ public class Help  {
     }
 
         // displays the help menu
-    private final void display() {
+    
+    /*  commented out 3/10 
+    public final void display() {
         System.out.println("\n\t===============================================================");
         System.out.println("\tEnter the letter associated with one of the following commands:");
 
-        for (int i = 0; i < Help.menuItems.length; i++) {
+        for (int i = 0; i < menuItems.length; i++) {
             System.out.println("\t   " + menuItems[i][0] + "\t" + menuItems[i][1]);
         }
         System.out.println("\t===============================================================\n");
     }
-  
+    */
+    
+    
+        
+    
 }

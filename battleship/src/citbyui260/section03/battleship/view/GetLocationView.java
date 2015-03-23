@@ -3,13 +3,16 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package battleship;
+package citbyui260.section03.battleship.view;
 
 /**
  *
  * @author Vehikite-John and Team 3
  */
 
+import citbyui260.section03.battleship.msgs.BattleshipError;
+import citbyui260.section03.battleship.boards.Board;
+import citbyui260.section03.battleship.game.Game;
 import java.awt.Point;
 import java.util.Scanner;
 
@@ -29,48 +32,56 @@ public class GetLocationView {
 
         Scanner inFile = new Scanner(System.in); // get input file      
         //String[] coordinates = new String[2];
-        String[] coordinates;
-        
+        String[] coordinates = {"",""};    
         Point location = null;
-        
         boolean valid = false;
         
 
         // prompt the use to enter the locaton to placeread the row and column coordinates
         while (!valid) {
             // prompt for the row and column numbers
-            System.out.println("\n\n\t" + this.game.currentPlayer.name + " it is your turn."
-                + " Enter a row and column number (For example: A 3)");
+            System.out.println("\n\n\t" + this.game.currentPlayer.getName() + " Please choose a grid location."
+              + " Enter a row and column number (For example: A3 )");
             
             // get the value entered by the user 
             String strRowColumn = inFile.nextLine(); 
             
-            // trim off all extra blanks from the input
-            strRowColumn = strRowColumn.trim();  
-            
-            // replace any commas enter with blanks
+            // Remove and Commas, trim off all extra blanks, convert to uppercase
             strRowColumn = strRowColumn.replace(',', ' '); 
+            strRowColumn = strRowColumn.trim();
+            strRowColumn = strRowColumn.toUpperCase();
+         
             
-            // tokenize the string into an array of words
-            coordinates = strRowColumn.split("\\s"); 
-
-            if (coordinates.length < 1) { // the value entered was not blank?
+             //Check for Q to Quit and return if found
+            if (strRowColumn.contains("Q")) 
+            {
+                return null;
+            }
+            
+            if (strRowColumn.length() < 1) { // the value entered was not blank?
                 new BattleshipError().displayError(
                         "You must enter a letter A-J and a number 1-10, "
                         + "or a \"Q\" to quit. Try again.");
                 continue;
-            }    
+            }  
+            
+            
+            
+            // tokenize the string into an array of words
+            //coordinates = strRowColumn.split("\\s"); 
+            coordinates[0] = String.valueOf(strRowColumn.charAt(0)); 
+            coordinates[1] = String.valueOf(strRowColumn.charAt(1)); 
+                
 
-            else if (coordinates.length == 1) { // only one coordinate entered?
-                if (coordinates[0].toUpperCase().equals("Q")) { // Quit?
-                    return null;
-                } else { // wrong number of values entered.
-                    new BattleshipError().displayError(
-                        "You must enter a letter A-J and a number 1-10, "
-                        + "or a \"Q\" to quit. Try again.");
-                    continue;
-                }
-            }
+//            else if (coordinates.length == 1) { // only one coordinate entered?
+//               
+//                } else { // wrong number of values entered.
+//                    new BattleshipError().displayError(
+//                        "You must enter a letter A-J and a number 1-10, "
+//                        + "or a \"Q\" to quit. Try again.");
+//                    continue;
+//                }
+           
 
             //2/14 - Add this section to convert Letters Enter for Row to num of grid.
             coordinates[0] = convertRow(coordinates[0]);
@@ -88,7 +99,7 @@ public class GetLocationView {
             if (!coordinates[0].matches(regExpressionPattern) ||
                 !coordinates[1].matches(regExpressionPattern)) {
                 new BattleshipError().displayError(
-                        "You must enter a letter A-J and a number 1-10, "
+                        "You must enter a letter A-J and a number 0-9, "
                         + "or a \"Q\" to quit. Try again.");
                 continue;
             }
@@ -102,10 +113,10 @@ public class GetLocationView {
             
             // Check for invalid row and column entered
             //2/14 Jeffry - Mondified to be < 0 not less than 1
-            if (row < 0   ||  row > board.rows ||
-                column < 0  ||  column > board.cols) {
+            if (row < 0   ||  row > board.getRows() ||
+                column < 0  ||  column > board.getCols() ) {
                 new BattleshipError().displayError(
-                        "Enter a valid letter A-J and number number 1-10. Try again.");
+                        "Enter a valid letter A-J and number number 0-9. Try again.");
                 continue;
             }
             
