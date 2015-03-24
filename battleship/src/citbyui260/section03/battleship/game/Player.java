@@ -3,8 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package battleship;
-
+package citbyui260.section03.battleship.game;
+import citbyui260.section03.battleship.ships.Boat;
+import citbyui260.section03.battleship.boards.ShotBoard;
+import citbyui260.section03.battleship.boards.ShipBoard;
+import citbyui260.section03.battleship.boards.Board;
+import citbyui260.section03.battleship.enums.*;  //Inport ENUM Class
 
 /**
  *
@@ -13,12 +17,12 @@ package battleship;
 public class Player
 {
     String name;
-    private String playerType;
+    private PlayerType playerType;
     private String marker;
     private long wins = 0;
     private long losses = 0;
-    public Board4Shots shotBoard;    //Jeffry - 2/16 added
-    public Board4Ships boatBoard;    //Jeffry - 2/16 added
+    public ShotBoard shotBoard;    //Jeffry - 2/16 added
+    public ShipBoard boatBoard;    //Jeffry - 2/16 added
     public Boat submarine;
     public Boat battleship;
     public Boat carrier;
@@ -27,11 +31,11 @@ public class Player
     public Player()
     {
        
-       shotBoard = new Board4Shots();    //Jeffry - Player board to show shots
-       boatBoard = new Board4Ships();    //Jeffry - Player board to show boats
-       submarine = new Boat(3,"Submarine", ShipType.SUBMARINE);     //Jeremy - 2/24
-       battleship = new Boat(4,"BattleShip", ShipType.BATTLESHIP);  //Jeremy - 2/24 
-       carrier = new Boat(5,"Carrier", ShipType.CARRIER);
+       shotBoard = new ShotBoard();    //Jeffry - Player board to show shots
+       boatBoard = new ShipBoard();    //Jeffry - Player board to show boats
+       submarine = new Boat(ShipType.SUBMARINE);     //Jeremy - 2/24
+       battleship = new Boat(ShipType.BATTLESHIP);  //Jeremy - 2/24 
+       carrier = new Boat(ShipType.CARRIER);
         
     }
 
@@ -46,11 +50,11 @@ public class Player
    }
     
    
-    public String getPlayerType() {
+    public PlayerType getPlayerType() {
         return playerType;
     }
     
-    public void setPlayerType(String playerType) {
+    public void setPlayerType(PlayerType playerType) {
         this.playerType = playerType;
     }
 
@@ -122,11 +126,10 @@ public class Player
     {
         double totalShots,hitPercent,missPercent;   //Requirement 1 - Two or more primitive Variables
         int hitOutput, missOutput;                  //Variables for typecasting
-        Board board = this.shotBoard;
         
         if(hit == 0 && miss == 0)   //Requirement 3 - At least one Relational operator 
         {
-            System.out.println("\nError: You can't divide by 0\n");  //Check for 0 and print error
+            System.out.println("\nError: You have taken no shots yet.  Try harder.");  //Check for 0 and print error
             return -1;
         }
         else if(hit < 0 || miss < 0)  //CHeck if Hit or miss are less than 0
@@ -136,7 +139,7 @@ public class Player
         }
         else
         {
-            averageScores();
+            
             
              totalShots = hit + miss;               //Requirement 2 - Two or More Mathmatical Operators
              hitPercent = hit/totalShots;
@@ -146,10 +149,12 @@ public class Player
              missOutput = (int) (missPercent * 100);
             
              // Requirement 5 - at least two character escape sequences
-             System.out.println("\nYou statistics:\n\tTotal shots: " + (int) totalShots + "\n\tHits:" + hit +" Percentage: " +hitOutput + "%\n\tMiss:" + miss +" Percentage: " +missOutput+"%");
-                 
-            sortScores();
-            highScoreNames();
+             System.out.println(getName() + " Your statistics:\n\tTotal shots: " + (int) totalShots + "\n\tHits:" + hit +" Percentage: " +hitOutput + "%\n\tMiss:" + miss +" Percentage: " +missOutput+"%");
+             
+            //Additional scoring functions here
+            //averageScores();
+            //sortScores();
+            //highScoreNames();
             
              
              return 0;  //Exit all is well

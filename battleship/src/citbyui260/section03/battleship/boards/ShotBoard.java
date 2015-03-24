@@ -3,8 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package battleship;
+package citbyui260.section03.battleship.boards;
 
+import java.awt.Point;
 import java.util.ArrayList;
 
 /**
@@ -13,12 +14,12 @@ import java.util.ArrayList;
  */
 
 
-public class Board4Shots extends Board
+public class ShotBoard extends Board
 {
     private int hits;
     private int misses;
     
-    public Board4Shots()
+    public ShotBoard()
     {
         setHits(0);
         setMisses(0);
@@ -26,7 +27,7 @@ public class Board4Shots extends Board
     
      public int getHits()
     {
-        getHitMiss();
+       
         return hits;
     }
 
@@ -38,7 +39,6 @@ public class Board4Shots extends Board
     public int getMisses()
     {
         
-        getHitMiss();
         return misses;
     }
 
@@ -104,4 +104,18 @@ public class Board4Shots extends Board
         System.out.println("Total spaces available: " + totalSpaces);
     }
     
+      public Point fireShotAI()
+    {
+        Point location= null;
+        int row, column;
+      
+        row = getRandom(getRows());       //Get Random Startrow
+        column = getRandom(getCols());
+
+        location = new Point(row, column);
+        
+        return location;
+    }
+     
+     
 }

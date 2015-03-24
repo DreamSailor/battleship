@@ -3,9 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package battleship;
+package citbyui260.section03.battleship.boards;
 
 import java.awt.Point;
+import java.util.Random;
 
 /**
  *
@@ -147,7 +148,12 @@ public class Board
         }
     }
 
-
+protected int getRandom(int maxVal) 
+    {
+        Random random = new Random();
+        return random.nextInt(maxVal);
+    }
+    
  
    
 }

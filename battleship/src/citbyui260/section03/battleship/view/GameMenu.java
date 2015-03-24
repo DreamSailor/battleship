@@ -3,8 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package battleship;
+package citbyui260.section03.battleship.view;
 
+import citbyui260.section03.battleship.msgs.BattleshipError;
+import citbyui260.section03.battleship.game.Game;
+import citbyui260.section03.battleship.control.GameMenuControl;
+import citbyui260.section03.battleship.enums.PlayerType;
+import citbyui260.section03.battleship.view.MenuSuper;
 import java.io.Serializable;
 import java.util.Scanner;
 
@@ -64,18 +69,26 @@ public class GameMenu extends MenuSuper
         Scanner inFile = new Scanner(System.in);
 
         do {    
-            this.display(); // display the menu
-
-            // get commaned entered
-            command = inFile.nextLine();
-            command = command.trim().toUpperCase();
+            
+            if(this.game.currentPlayer.getPlayerType()  == PlayerType.HUMAN)
+            {
+                this.display(); // display the menu
+                    // get commaned entered
+                command = inFile.nextLine();
+                command = command.trim().toUpperCase();
+            }
+            else
+                //add IF/Else for Game Won/Lost
+                command = "F";
+            
             
             switch (command) {
                 case "P":
                     this.gameMenuControl.placeShips();
                     break;
                 case "F":
-                    this.gameMenuControl.fireAShot();  
+                    this.gameMenuControl.fireAShot();
+                    this.game.switchPlayers();
                     break;
                 case "A":
                     this.game.currentPlayer.shotBoard.availableShots();
@@ -85,6 +98,7 @@ public class GameMenu extends MenuSuper
                     break;
                 case "S":
                     gameMenuControl.startNewGame();
+                    command = "Q"; 
                     break;
                 case "R":
                     gameMenuControl.displayStatistics();
