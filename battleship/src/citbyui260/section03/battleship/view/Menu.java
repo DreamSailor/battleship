@@ -47,16 +47,17 @@ public class Menu extends MenuSuper {
                 case "1":
                     this.mainMenuControl.startGame(1);
                     break;
-                case "2":
-                    this.mainMenuControl.startGame(2);
-                    break;
+//  Currently not supporting a two human player game                   
+//                case "2":
+//                    this.mainMenuControl.startGame(2);
+//                    break;
                 case "H":
                     this.mainMenuControl.displayHelpMenu();            
                     break;
                 case "Q":
                     break;
                 default: 
-                    new BattleshipError().displayError("Invalid command. Please enter a valid command.");
+                    BattleshipError.displayError("Invalid command. Please enter a valid command.");
                     continue;                    
             }           
         } while (!command.equals("Q"));
@@ -65,17 +66,5 @@ public class Menu extends MenuSuper {
     }
     
 
-    
-    
-//   public final void display() {
-//        System.out.println("\n\t===============================================================");
-//        System.out.println("\nPick a Number/Letter associated with one of the following commands:");
-//
-//        for (int i = 0; i < this.menuItems.length; i++) {
-//            System.out.println("\t   " + menuItems[i][0] + "\t" + menuItems[i][1]);
-//         
-//        }
-//        System.out.println("\n\t===============================================================\n");
-//    }   
     
 }

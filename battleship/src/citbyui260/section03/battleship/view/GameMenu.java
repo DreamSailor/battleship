@@ -46,7 +46,7 @@ public class GameMenu extends MenuSuper
         {"D", "Display the board"},
         {"S", "Start a new game"},
         {"R", "Report stastics"},
-        {"C", "Change game preferences"},
+ //     {"C", "Change game preferences"},
         {"H", "Help"},
         {"Q", "QUIT"}
     };
@@ -87,8 +87,15 @@ public class GameMenu extends MenuSuper
                     this.gameMenuControl.placeShips();
                     break;
                 case "F":
-                    this.gameMenuControl.fireAShot();
-                    this.game.switchPlayers();
+                        if(this.game.currentPlayer.checkReadyToPlay())
+                        {
+                            this.gameMenuControl.fireAShot();
+                            this.game.switchPlayers();
+                        }
+                        else
+                        {
+                            BattleshipError.displayError("You must place your ships before you fire a shot at your opponent!");
+                        }
                     break;
                 case "A":
                     this.game.currentPlayer.shotBoard.availableShots();
@@ -103,16 +110,16 @@ public class GameMenu extends MenuSuper
                 case "R":
                     gameMenuControl.displayStatistics();
                     break;
-                case "C":
-                    gameMenuControl.displayPreferencesMenu();
-                    break;
+//                case "C":
+//                    gameMenuControl.displayPreferencesMenu();
+//                    break;
                 case "H":
                     gameMenuControl.displayHelpMenu();
                     break;
                 case "Q":                   
                     break;
                 default: 
-                    new BattleshipError().displayError("Invalid command. Please enter a valid command.");
+                    BattleshipError.displayError("Invalid command. Please enter a valid command.");
                     continue;                              
             }
         } while (!command.equals("Q"));
@@ -120,16 +127,7 @@ public class GameMenu extends MenuSuper
         return;
     }
     
-//    private final void display() //Updated to private 3/7 - Jeremy K.
-//    {
-//        System.out.println("\n\t===============================================================");
-//        System.out.println("\tEnter the letter associated with one of the following commands:");
-//
-//        for (int i = 0; i < this.menuItems.length; i++) {
-//            System.out.println("\t   " + menuItems[i][0] + "\t" + menuItems[i][1]);
-//        }
-//        System.out.println("\t===============================================================\n");
-//    }
+
   
     
 }
