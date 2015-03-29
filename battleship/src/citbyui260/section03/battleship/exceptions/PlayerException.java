@@ -9,17 +9,17 @@ package citbyui260.section03.battleship.exceptions;
  *
  * @author Legion (because we are many)
  */
-public class BoatException extends Exception{
+public class PlayerException extends Exception{
     
-    public BoatException (String msg){
+    public PlayerException (String msg){
         super(msg);
     }
     
-    public BoatException (String msg, Throwable cause){
+    public PlayerException (String msg, Throwable cause){
         super(msg, cause);
     }
     
-    public BoatException (Throwable cause){
+    public PlayerException (Throwable cause){
         super(cause);
     }
     

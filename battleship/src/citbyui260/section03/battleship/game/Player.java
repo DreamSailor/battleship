@@ -9,6 +9,7 @@ import citbyui260.section03.battleship.boards.ShotBoard;
 import citbyui260.section03.battleship.boards.ShipBoard;
 import citbyui260.section03.battleship.boards.Board;
 import citbyui260.section03.battleship.enums.*;  //Inport ENUM Class
+import citbyui260.section03.battleship.exceptions.*;
 
 /**
  *
@@ -173,20 +174,19 @@ public class Player
     --------------------------------------------------------------------*/
     
     
-     public int getGameStats(int hit, int miss)
+     public int getGameStats(int hit, int miss) throws PlayerException
     {
         double totalShots,hitPercent,missPercent;   //Requirement 1 - Two or more primitive Variables
         int hitOutput, missOutput;                  //Variables for typecasting
         
-        if(hit == 0 && miss == 0)   //Requirement 3 - At least one Relational operator 
+        if(hit == 0 && miss == 0)   //Requirement 3 - At least one Relational operator
         {
-            System.out.println("\nError: You have taken no shots yet.  Try harder.");  //Check for 0 and print error
-            return -1;
+            throw new PlayerException("You have taken no shots yet.  Try harder.");
         }
         else if(hit < 0 || miss < 0)  //CHeck if Hit or miss are less than 0
         {
-            System.out.println("\nError: Invalid value in \"Hit\" or \"Miss\"\n");
-            return -1;
+            throw new PlayerException("Invalid value in \"Hit\" or \"Miss\"");
+         
         }
         else
         {

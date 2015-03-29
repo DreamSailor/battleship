@@ -142,7 +142,7 @@ public class Boat
             //return sc.INVALIDNUMHITS;
             throw new BoatException("Your ship is not that big buddy");
         }
-                
+               
          else if (hitDamage == 0) // no hits yet statement
         {
             //System.out.println("\nThe " + name + " is safe.  It has no hits yet. \n");
