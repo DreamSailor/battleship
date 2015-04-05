@@ -15,74 +15,72 @@ public class HelpMenuControl  {
         
     } 
 
-    public void displayBoardHelp() {
-        System.out.println();
-        this.displayHelpBorder();             
-        System.out.println( 
-                "\tThe game board for Battleship. It consist of a grid of "
-                + "\n\tlocations. Players place their ships on various locations "
-                + "\n\ton the board. The default board is 10 rows by 10 columns.");
-        displayHelpBorder();
+    public String displayBoardHelp() {
+                       
+        return "The game boards for Battleship consist of a grid of "
+                + "locations 10 rows by 10 columns. There are two boards "
+                + "one for the Ships and one for the Player to use to shoot. "
+                +"\n\nPlayers place their ships on various locations on the Ship board "
+                + "they use the Shot board to place shots against the other Players "
+                +"ships.";
+     
     }
-    
-    
+   
         
-    public void displayGameHelp() {
-        System.out.println();
-        displayHelpBorder();     
-        System.out.println( 
-                 "\tThe objective of the game is to be the first player sink "
-                + "\n\tthe other player's Battleship.");
-        displayHelpBorder();
+    public String displayGameHelp() {
+
+        return "The objective of the game is to be the first player to find "
+                + "and sink the other player's Battleship."
+                + "\n\nPlayers each take turns firing shots until one Battleship "
+                + "is sunk.";
+   
     }
             
-    public void displayRealPlayerHelp() {
-        System.out.println();
-        displayHelpBorder();     
-        System.out.println( 
-                "\tA real player manually takes their turn by choosing a "
-              + "\n\tlocation within the grid to attempt to hit and sink the other "
-              + "\n\tplayer's Battleship."); 
-        displayHelpBorder();
+    public String displayPlayerHelp() {
+
+        return "The real player manually takes their turn by choosing a "
+              + "location within the grid to attempt to hit and sink the other "
+              + "player's ships, including the Battleship."
+              + "\n\nThe computer based player automatically takes its turn "
+              + "immediatly after a real player in the game."; 
+
     }
     
-    public void displayWinHelp() {
-        System.out.println();
-        displayHelpBorder();     
-        System.out.println( 
-                "\tA player wins by sinking the opponent's Battleship. The Battleship"
-              + "\n\thas 4 hits before it is sunk...thus it is sink or be sunk."); 
-        displayHelpBorder();
+    public String displayWinHelp() {
+
+        return "A player wins by sinking the opponent's Battleship. The Battleship "
+              + "has 4 hits before it is sunk...thus it is sink or be sunk."; 
+ 
     }
                  
-    public void displayComputerPlayerHelp() {
-        System.out.println();
-        displayHelpBorder();     
-        System.out.println( 
-                "\tA computer based player automatically takes its turn "
-                + "\n\timmediatly after a real player in a single player game."
-                ); 
-        displayHelpBorder();
-    }
              
-    public void displayLocationHelp() {
-        System.out.println();
-        displayHelpBorder();     
-        System.out.println( 
-               "\tPlayer will choose a row and column (ex. A1, D5)"
-             + "\n\tas well as the orientation of the ship down or right."); 
-        displayHelpBorder();
+    public String displayShipHelp() {
+
+        return "Player will choose a row and column (ex. A1, D5) "
+             + "as well as the orientation of the ship down or to the right."; 
+
     }
                  
-    public void displayHitHelp() {
-        System.out.println();
-        displayHelpBorder();     
-        System.out.println( 
-               "\tA symbol that \"marks\" the locations in the board that have "
-                + "\n\tbeen hit or missed by a player. "
-                + "\n\tThe default markers are \"X\" for hit, \"M\" for miss, and \"O\" untried areas."
-                ); 
-        displayHelpBorder();
+    public String displayHitHelp() {
+
+        return"A symbol that \"marks\" the locations in the board that have "
+                + "been hit or missed by a player. "
+                + "\n\nThe default markers are \"H\" for hit, \"M\" for miss, "
+                + "and \" \" (blank) for any untried areas."
+                ; 
+   
+    }
+    
+        public String displayShotHelp() {
+
+        return"Player will use their Shot board to place a shot looking for "
+                + "the opponents Battleship. "
+                + "\n\nPlayer will choose a row and column (ex. A1, D5) for each shot. "
+                + "\n\nThe default markers will be displayed on your Shot board "
+                + "are \"H\" for hit, \"M\" for miss, "
+                + "and \" \" (blank) for any untried areas."
+                ; 
+   
     }
     
     
