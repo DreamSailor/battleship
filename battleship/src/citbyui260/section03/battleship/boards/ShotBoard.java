@@ -118,14 +118,15 @@ public class ShotBoard extends Board
     }
     
       
-        public void display()
+    @Override
+    public void display()
     {
         String marker;
         
         System.out.print("  0123456789\n------------\n");   //Print Row header
         for (int i = 0; i < getRows(); i++) 
         {
-            System.out.print(getColStr(i));
+            System.out.print(getColStr(i) + " ");
             for (int j = 0; j < getCols(); j++) 
             {
                 switch(checkLocation(i,j))
@@ -135,6 +136,9 @@ public class ShotBoard extends Board
                         break;
                     case 2:
                         marker = "M";
+                        break;
+                    case 3:
+                        marker = "S";
                         break;
                     default:
                         marker = "0";

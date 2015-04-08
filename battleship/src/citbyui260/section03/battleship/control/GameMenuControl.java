@@ -6,7 +6,6 @@
 package citbyui260.section03.battleship.control;
 
 import citbyui260.section03.battleship.msgs.BattleshipError;
-import citbyui260.section03.battleship.msgs.ShotOutput;
 import citbyui260.section03.battleship.boards.*;
 import citbyui260.section03.battleship.enums.*;
 import citbyui260.section03.battleship.view.*;
@@ -65,10 +64,47 @@ public class GameMenuControl
     public void setPlaceShipMenu(PlaceShipMenu placeShipMenu) {
         this.placeShipMenu = placeShipMenu;
     }
-    //end of change 3/7
-    public int fireAShot()
+    
+    
+    /*
+    
+    New Method to control Firing a Shot with End of Game capcity.
+    
+    */
+    
+    public String fireControl()
     {
-        ShipCodes errCode= ShipCodes.OK;   //Error value for shots
+        String passBack = "F";  //Use this to pass back F or Q deplending if the battleship got sunk.
+        
+        if(this.game.currentPlayer.checkReadyToPlay())
+        {
+            try
+            {
+                fireAShot();
+                this.game.switchPlayers();
+            }catch (BattleshipSunkException bse)
+            {
+                BattleshipError.displayLine(game.otherPlayer.getName()+ bse.getMessage()); 
+                game.endGame();
+                displayStatistics();   //current player
+                this.game.switchPlayers();
+                displayStatistics();   //other player
+                passBack = "Q";
+            }
+        }
+        else
+        {
+            BattleshipError.displayError("You must place your ships before you fire a shot at your opponent!");
+        }
+        
+        return passBack;
+    }
+    
+    
+    
+    public int fireAShot() throws BattleshipSunkException
+    {
+        //ShipCodes errCode= ShipCodes.OK;   //Error value for shots
         ShipBoard otherBoatBoard = this.game.otherPlayer.boatBoard;
         ShotBoard thisShotBoard = this.game.currentPlayer.shotBoard;
       
@@ -95,7 +131,7 @@ public class GameMenuControl
             
             String printShotLocation =((char) (location.x + 65) + "" + location.y);
 
-            if( flag == 1)  //Location already used
+            if( flag == 1 || flag == 2)  //Location already used
                 BattleshipError.displayLine(this.game.currentPlayer.getName() + " you've already used " +  printShotLocation + " for a shot");  //2/20 Jeffry - Temp print out of location
             else
                 BattleshipError.displayLine(this.game.currentPlayer.getName() + " fired a Shot at " +  printShotLocation);  //2/16 Jeffry - Temp print out of location
@@ -113,22 +149,39 @@ public class GameMenuControl
         if(otherFlag != 0)  //Means there is a boat at this locaiton.
         {
             try {
-            
-            
-            Boat hitBoat;  //new local varable to get ship information 
-            
-            thisShotBoard.setHits(thisShotBoard.getHits()+1);
-            thisShotBoard.occupyLocation(location,1); //set to Hit on Shot Board
-            
-            int typeShip = otherBoatBoard.checkLocation(location); //Get ship type location of coordinates
-            hitBoat = otherBoatBoard.getShip(this.game.otherPlayer, typeShip);
-            hitBoat.setHitDamage(hitBoat.getHitDamage()+1);  //Increase damage by one
-            
-            
-            errCode = hitBoat.hitOrSunk(hitBoat.getHitDamage(), hitBoat.getMaxDamage()); //calls hitOrSunk method in boat.java   
-                } catch(BoatException be){
-                BattleshipError.displayError(be.getMessage()); 
-            
+                   
+                
+                    Boat hitBoat;  //new local varable to get ship information 
+
+                    thisShotBoard.setHits(thisShotBoard.getHits()+1);
+                    thisShotBoard.occupyLocation(location,1); //set to Hit on Shot Board
+
+                    int typeShip = otherBoatBoard.checkLocation(location); //Get ship type location of coordinates
+                    hitBoat = otherBoatBoard.getShip(this.game.otherPlayer, typeShip);
+                    hitBoat.setHitDamage(hitBoat.getHitDamage()+1);  //Increase damage by one
+
+
+                    hitBoat.hitOrSunk(hitBoat.getHitDamage(), hitBoat.getMaxDamage()); //calls method in boat.java   
+                } 
+            catch (BattleshipSunkException btse)
+            {
+              BattleshipError.displayLine(this.game.currentPlayer.getName() + " you won!"); 
+              throw new BattleshipSunkException(btse.getMessage());
+            }
+            catch (BoatSunkException bse)
+            {
+              BattleshipError.displayLine(this.game.currentPlayer.getName() + " you sunk "
+                      + this.game.otherPlayer.getName()+ "'s " + bse.getMessage()); 
+            }
+             catch (BoatHitException bse)
+            {
+              BattleshipError.displayLine(this.game.currentPlayer.getName() + " you hit "
+                      + this.game.otherPlayer.getName()+ "'s " + bse.getMessage()); 
+            }
+            catch(BoatException be)
+            {
+                BattleshipError.displayLine(be.getMessage());
+                
             }
             /*switch(errCode)   //Check if there is an error code need for when we know to end the game.
             {
@@ -176,12 +229,17 @@ public class GameMenuControl
    
     public void displayStatistics()
     {
+        try{
          BattleshipError.displayLine("Display Statistics");
          //this.game.currentPlayer.sortScores();
          //this.game.currentPlayer.averageScores();
          //this.game.currentPlayer.highScoreNames();
          this.game.currentPlayer.getGameStats(this.game.currentPlayer.shotBoard.getHits(), this.game.currentPlayer.shotBoard.getMisses());
-        
+        }
+        catch(PlayerException pe)
+        {
+            BattleshipError.displayLine(pe.getMessage());
+        }
                  
     }
     
