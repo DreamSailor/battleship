@@ -12,7 +12,9 @@ import citbyui260.section03.battleship.enums.*;
 import citbyui260.section03.battleship.view.*;
 import citbyui260.section03.battleship.game.*;
 import citbyui260.section03.battleship.ships.*;
+import citbyui260.section03.battleship.exceptions.*;
 import java.awt.Point;
+
 
 
 /**
@@ -90,14 +92,14 @@ public class GameMenuControl
                 return -1;
             }
             
-            flag = thisShotBoard.occupyLocation(location,1);       //Set the shot in the grid,
+            flag = thisShotBoard.checkLocation(location);       //Set the shot in the grid, 2 = Miss
             
             String printShotLocation =((char) (location.x + 65) + "" + location.y);
 
             if( flag == 1)  //Location already used
-                new BattleshipError().displayLine(this.game.currentPlayer.getName() + " you've already used " +  printShotLocation + " for a shot");  //2/20 Jeffry - Temp print out of location
+                BattleshipError.displayLine(this.game.currentPlayer.getName() + " you've already used " +  printShotLocation + " for a shot");  //2/20 Jeffry - Temp print out of location
             else
-                new BattleshipError().displayLine(this.game.currentPlayer.getName() + " fired a Shot at " +  printShotLocation);  //2/16 Jeffry - Temp print out of location
+                BattleshipError.displayLine(this.game.currentPlayer.getName() + " fired a Shot at " +  printShotLocation);  //2/16 Jeffry - Temp print out of location
             
 
         }while(flag != 0);
@@ -111,28 +113,35 @@ public class GameMenuControl
         
         if(otherFlag != 0)  //Means there is a boat at this locaiton.
         {
-            Boat hitBoat;  //new local varable to get ship information 
+            try {
             
-            thisShotBoard.setHits(thisShotBoard.getHits()+1);
-            
-            int typeShip = otherBoatBoard.checkLocation(location); //Get ship type location of coordinates
+                   Boat hitBoat;  //new local varable to get ship information 
+
+                    thisShotBoard.setHits(thisShotBoard.getHits()+1);
+                    thisShotBoard.occupyLocation(location,1); //set to Hit on Shot Board
+
+                    int typeShip = otherBoatBoard.checkLocation(location); //Get ship type location of coordinates
+                    hitBoat = otherBoatBoard.getShip(this.game.otherPlayer, typeShip);
+                    hitBoat.setHitDamage(hitBoat.getHitDamage()+1);  //Increase damage by one
            
-            hitBoat = otherBoatBoard.getShip(this.game.otherPlayer, typeShip);
-            hitBoat.setHitDamage(hitBoat.getHitDamage()+1);  //Increase damage by one
-            errCode = hitBoat.hitOrSunk(hitBoat.getHitDamage(), hitBoat.getMaxDamage()); //calls hitOrSunk method in boat.java   
+                    errCode = hitBoat.hitOrSunk(hitBoat.getHitDamage(), hitBoat.getMaxDamage()); //calls hitOrSunk method in boat.java   
+                } catch(BoatException be){
+                BattleshipError.displayError(be.getMessage()); 
             
-            switch(errCode)   //Check if there is an error code need for when we know to end the game.
+            }
+            /*switch(errCode)   //Check if there is an error code need for when we know to end the game.
             {
                 case OK:
                     break;
                 default:
                     new ShotOutput().displayError(errCode);
-            }
+            }*/
             
         }
         else{
             thisShotBoard.setMisses(thisShotBoard.getMisses()+1);
-            new BattleshipError().displayLine(this.game.currentPlayer.getName() + " Sorry your shot missed.");
+            thisShotBoard.occupyLocation(location,2); //set to Miss on Shot board
+            BattleshipError.displayLine(this.game.currentPlayer.getName() + " Sorry your shot missed.");
             //this.game.switchPlayers(); //calls swtich player method in game.java
 
         }           
@@ -153,27 +162,31 @@ public class GameMenuControl
      public void displayBoard()
     {
  
-        new BattleshipError().displayLine("Displaying Your Shot  board");
+        BattleshipError.displayLine("Displaying Your Shot  board");
         this.game.currentPlayer.shotBoard.display();
-         new BattleshipError().displayLine("\nDisplaying Your Ships ");
+         BattleshipError.displayLine("\nDisplaying Your Ships ");
         this.game.currentPlayer.boatBoard.display();
     }
      
     public void startNewGame()
     {
-         new BattleshipError().displayLine("Starting a new game");
+         BattleshipError.displayLine("Starting a new game");
     }
    
     public void displayStatistics()
     {
-         new BattleshipError().displayLine("Display Statistics");
-         //this.game.currentPlayer.sortScores();
-         //this.game.currentPlayer.averageScores();
-         //this.game.currentPlayer.highScoreNames();
-         this.game.currentPlayer.getGameStats(this.game.currentPlayer.shotBoard.getHits(), this.game.currentPlayer.shotBoard.getMisses());
-        
-                 
-    }
+        try
+        {     
+             BattleshipError.displayLine("Display Statistics");
+             //this.game.currentPlayer.sortScores();
+             //this.game.currentPlayer.averageScores();
+             //this.game.currentPlayer.highScoreNames();
+             this.game.currentPlayer.getGameStats(this.game.currentPlayer.shotBoard.getHits(), this.game.currentPlayer.shotBoard.getMisses());
+        }
+        catch(PlayerException pe){
+                BattleshipError.displayLine(pe.getMessage());        
+        }
+    }    
     
     public void displayPreferencesMenu()
     {
