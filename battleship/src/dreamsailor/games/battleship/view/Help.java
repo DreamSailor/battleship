@@ -62,22 +62,22 @@ public class Help extends MenuSuper {
             
             switch (command) {
                 case "B":
-                    this.helpMenuControl.displayBoardHelp();
+                    helpMenuControl.displayBoardHelp();
                     break;
                 case "C":
-                    this.helpMenuControl.displayComputerPlayerHelp();
+                    this.helpMenuControl.displayPlayerHelp();
                     break;
                 case "G":
                     this.helpMenuControl.displayGameHelp();
                     break;                  
                 case "S":
-                    this.helpMenuControl.displayLocationHelp();
+                    this.helpMenuControl.displayShipHelp();
                     break;
                 case "H":
                     this.helpMenuControl.displayHitHelp();
                     break;
                  case "R":
-                    this.helpMenuControl.displayRealPlayerHelp();
+                    this.helpMenuControl.displayPlayerHelp();
                     break; 
                 case "W":
                     this.helpMenuControl.displayWinHelp();
